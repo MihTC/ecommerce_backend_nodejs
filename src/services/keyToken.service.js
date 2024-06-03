@@ -41,7 +41,7 @@ class KeyTokenService {
     }
   };
 
-  static deleteKeyById = async (id) => {
+  static removeKeyById = async (id) => {
     return await keytokenModel.deleteOne(id);
   };
 
@@ -49,6 +49,22 @@ class KeyTokenService {
     return await keytokenModel
       .findOne({ user: new Types.ObjectId(userId) })
       .lean();
+  };
+
+  static findByRefreshTokenUsed = async (refreshToken) => {
+    return await keytokenModel
+      .findOne({ refreshTokensUsed: refreshToken })
+      .lean();
+  };
+
+  static findByRefreshToken = async (refreshToken) => {
+    return await keytokenModel.findOne({ refreshToken });
+  };
+
+  static deleteKeyById = async (userId) => {
+    return await keytokenModel.deleteOne({
+      user: new Types.ObjectId(userId),
+    });
   };
 }
 
