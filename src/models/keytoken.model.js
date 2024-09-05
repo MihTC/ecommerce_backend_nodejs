@@ -34,7 +34,7 @@ var keyTokenSchema = new Schema(
     collection: COLLECTION_NAME,
     timestamps: true,
   }
-);
+); 
 
 //Export the model
 module.exports = model(DOCUMENT_NAME, keyTokenSchema);

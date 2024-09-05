@@ -20,14 +20,14 @@ class KeyTokenService {
       // return tokens ? tokens.publicKey : null;
 
       // level xxx
-      const filter = { user: userId },
-        update = {
-          publicKey,
-          privateKey,
-          refreshTokensUsed: [],
-          refreshToken,
-        },
-        options = { upsert: true, new: true };
+      const filter = { user: userId };
+      const update = {
+        publicKey,
+        privateKey,
+        refreshTokensUsed: [],
+        refreshToken,
+      };
+      const options = { upsert: true, new: true };
 
       const tokens = await keytokenModel.findOneAndUpdate(
         filter,
