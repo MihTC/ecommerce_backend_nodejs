@@ -24,6 +24,17 @@ class ProductController {
       }),
     }).send(res);
   };
+
+  // QUERY //
+  getAllDraftsForShop = async (req, res, next) => {
+    new SuccessResponse({
+      message: "Get list draft success",
+      metadata: await ProductServiceV2.findAllDraftsForShop({
+        product_shop: req.user.userId,
+      }),
+    }).send(res);
+  };
+  // END QUERY //
 }
 
 module.exports = new ProductController();
