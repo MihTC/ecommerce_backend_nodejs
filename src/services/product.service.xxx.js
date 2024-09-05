@@ -11,6 +11,7 @@ const {
   findAllDraftsForShop,
   findAllPublishForShop,
   publishProductByShop,
+  unpublishProductByShop,
 } = require("../models/repositories/product.repo");
 
 // difine Factory class to create product
@@ -37,6 +38,9 @@ class ProductFactory {
   // PUT //
   static async publishProductByShop({ product_shop, product_id }) {
     return await publishProductByShop({ product_shop, product_id });
+  }
+  static async unpublishProductByShop({ product_shop, product_id }) {
+    return await unpublishProductByShop({ product_shop, product_id });
   }
 
   // QUERY //

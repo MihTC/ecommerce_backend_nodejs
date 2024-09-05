@@ -36,6 +36,16 @@ class ProductController {
     }).send(res);
   };
 
+  unpublishProductByShop = async (req, res, next) => {
+    new SuccessResponse({
+      message: "unpublish Product By Shop success",
+      metadata: await ProductServiceV2.unpublishProductByShop({
+        product_shop: req.user.userId,
+        product_id: req.params.id,
+      }),
+    }).send(res);
+  };
+
   // QUERY //
   getAllDraftsForShop = async (req, res, next) => {
     new SuccessResponse({
