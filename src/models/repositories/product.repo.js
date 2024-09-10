@@ -1,5 +1,5 @@
 "use strict";
-const { getSelectData } = require("../../utils");
+const { getSelectData, unGetSelectData } = require("../../utils");
 const { product } = require("../product.model");
 const { Types } = require("mongoose");
 
@@ -60,6 +60,10 @@ const findAllProducts = async ({ limit, sort, page, filter, select }) => {
   return products;
 };
 
+const findProduct = async ({ product_id, unSelect }) => {
+  return await product.findById(product_id).select(unGetSelectData(unSelect));
+};
+
 const queryProduct = async ({ query, limit, skip }) => {
   return await product
     .find(query)
@@ -78,4 +82,5 @@ module.exports = {
   unpublishProductByShop,
   searchProductsByUser,
   findAllProducts,
+  findProduct,
 };
