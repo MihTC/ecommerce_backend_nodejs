@@ -15,7 +15,12 @@ const {
   searchProductsByUser,
   findAllProducts,
   findProduct,
+  updateProductById,
 } = require("../models/repositories/product.repo");
+const {
+  removeUnderfinedObject,
+  updateNestedObjectParser,
+} = require("../utils");
 
 // difine Factory class to create product
 class ProductFactory {
@@ -38,12 +43,12 @@ class ProductFactory {
     return new productClass(payload).createProduct();
   }
 
-  static async updateProduct(type, payload) {
+  static async updateProduct(type, product_id, payload) {
     const productClass = ProductFactory.productRegistry[type];
     if (!productClass)
       throw new BadRequestError("Invalid Product Types ", type);
 
-    return new productClass(payload).createProduct();
+    return new productClass(payload).updateProduct(product_id);
   }
 
   // PUT //
@@ -118,6 +123,11 @@ class Product {
   async createProduct(product_id) {
     return await product.create({ ...this, _id: product_id });
   }
+
+  // update product
+  async updateProduct(product_id, bodyUpdate) {
+    return await updateProductById({ product_id, bodyUpdate, model: product });
+  }
 }
 
 // define sub-class for different product types Clothing
@@ -137,6 +147,25 @@ class Clothing extends Product {
       throw new BadRequestError("create new Product error");
     }
     return newProduct;
+  }
+
+  async updateProduct(product_id) {
+    // 1. remove attribute has null, underfined
+    const objectParams = removeUnderfinedObject(this);
+    // 2. check xem update o cho nao ??
+    if (objectParams.product_attributes) {
+      // update child
+      await updateProductById({
+        product_id,
+        bodyUpdate: updateNestedObjectParser(objectParams.product_attributes),
+        model: clothing,
+      });
+    }
+    const updateProduct = await super.updateProduct(
+      product_id,
+      updateNestedObjectParser(objectParams)
+    );
+    return updateProduct;
   }
 }
 
